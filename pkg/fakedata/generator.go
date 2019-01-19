@@ -188,6 +188,12 @@ func file(path string) (func() string, error) {
 	}
 	list := strings.Split(string(content), "\n")
 
+	for i, line := range list {
+		if line == "\\n" || line == "\\r\\n" || line == "" {
+			list = append(list[:i], list[i+1:]...)
+		}
+	}
+
 	return func() string { return withList(list)() }, nil
 }
 
